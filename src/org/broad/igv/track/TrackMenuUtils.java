@@ -388,6 +388,11 @@ public class TrackMenuUtils {
                     }
                 }
 
+                // Start of Roche-Tessella modification
+                if(f.getClass().toString().contains("SpliceJunctionFeature"))    {
+                	featurePopupMenu.add(getChangeAutoScale(tracks));
+                }
+                // End of Roche-Tessella modification
 
                 featurePopupMenu.add(getCopyDetailsItem(f, te));
                 featurePopupMenu.add(getCopySequenceItem(f));
@@ -1104,6 +1109,39 @@ public class TrackMenuUtils {
         });
         return item;
     }
+    
+    // Start of Roche-Tessella modification
+    private static JMenuItem getChangeAutoScale(final Collection<Track> selectedTracks) {
+
+        final JCheckBoxMenuItem autoscaleItem = new JCheckBoxMenuItem("Autoscale");
+        for (Track t : selectedTracks) {
+            boolean autoScale = t.getAutoScale();
+        	autoscaleItem.setSelected(autoScale);
+        }
+        
+        autoscaleItem.addActionListener(new ActionListener() {
+
+        	public void actionPerformed(ActionEvent evt) {
+        		for (Track t : selectedTracks) {
+        			boolean autoScale = t.getAutoScale();
+        			TrackProperties tp = new TrackProperties();
+        			if (autoScale) {
+        				tp.setAutoScale(false);
+        				autoscaleItem.setSelected(false);
+        			} else {
+        				tp.setAutoScale(true);
+        				autoscaleItem.setSelected(true);
+        			}
+        			tp.setRendererClass(SpliceJunctionRenderer.class);
+        			t.setProperties(tp);
+        		}
+        		refresh();
+        	}
+        });
+        
+        return autoscaleItem;
+    }
+    // End of Roche-Tessella modification
 
 }
 
