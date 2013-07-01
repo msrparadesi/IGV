@@ -212,5 +212,9 @@ public interface Track extends Persistable{
     float getYLine();
 
     void updateGenome(Genome genome);
+    
+    // Start of Roche-Tessella modification
+    boolean getAutoScale();
+    // End of Roche-Tessella modification
 
 }
