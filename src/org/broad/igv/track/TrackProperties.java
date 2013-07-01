@@ -445,4 +445,11 @@ public class TrackProperties {
         }
 
     }
+    
+    // Start of Roche-Tessella modification
+    public boolean getAutoScale()    {
+    	return this.autoScaleFlag;
+    }
+    // End of Roche-Tessella modification
+    
 }
