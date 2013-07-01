@@ -703,6 +703,10 @@ public abstract class AbstractTrack implements Track {
                 this.setAttributeValue(entry.getKey(), entry.getValue());
             }
         }
+        
+        // Start of Roche-Tessella modification
+        this.autoScale = properties.getAutoScale();
+        // End of Roche-Tessella modification
 
     }
 
@@ -1018,4 +1022,9 @@ public abstract class AbstractTrack implements Track {
         return null;
     }
 
+    // Start of Roche-Tessella modification
+    public boolean getAutoScale()    {
+    	return this.autoScale;
+    }
+    // End of Roche-Tessella modification
 }
