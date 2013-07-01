@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2010-2011 by Fred Hutchinson Cancer Research Center.  All Rights Reserved.
+ * Portions of code, copyright (c) 2013 by F. Hoffman-La Roche Ltd and Tessella Ltd
 
  * This software is licensed under the terms of the GNU Lesser General
  * Public License (LGPL), Version 2.1 which is available at http://www.opensource.org/licenses/lgpl-2.1.php.
@@ -15,11 +16,24 @@
  * REGARDLESS OF  WHETHER FRED HUTCHINSON CANCER RESEARCH CENTER SHALL BE ADVISED,
  * SHALL HAVE OTHER REASON TO KNOW, OR IN FACT SHALL KNOW OF THE POSSIBILITY OF THE
  * FOREGOING.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS." F.HOFFMAN-LA ROCHE AND TESSELLA LTD MAKE NO
+ * REPRESENTATIONS OR WARRANTES OF ANY KIND CONCERNING THE SOFTWARE, EXPRESS OR IMPLIED,
+ * INCLUDING, WITHOUT LIMITATION, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE, NONINFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER DEFECTS,
+ * WHETHER OR NOT DISCOVERABLE.  IN NO EVENT SHALL FRED HUTCHINSON CANCER RESEARCH
+ * CENTER OR ITS TRUSTEES, DIRECTORS, OFFICERS, EMPLOYEES, AND AFFILIATES BE LIABLE FOR
+ * ANY DAMAGES OF ANY KIND, INCLUDING, WITHOUT LIMITATION, INCIDENTAL OR
+ * CONSEQUENTIAL DAMAGES, ECONOMIC DAMAGES OR INJURY TO PROPERTY AND LOST PROFITS,
+ * REGARDLESS OF  WHETHER FRED HUTCHINSON CANCER RESEARCH CENTER SHALL BE ADVISED,
+ * SHALL HAVE OTHER REASON TO KNOW, OR IN FACT SHALL KNOW OF THE POSSIBILITY OF THE
+ * FOREGOING.
  */
 package org.broad.igv.renderer;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import org.apache.commons.math.stat.Frequency;
 import org.apache.log4j.Logger;
 import org.broad.igv.PreferenceManager;
 import org.broad.igv.feature.IGVFeature;
@@ -32,6 +46,8 @@ import org.broad.igv.ui.FontManager;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -106,6 +122,29 @@ public class SpliceJunctionRenderer extends IGVFeatureRenderer {
 
             SpliceJunctionFeature selectedFeature =
                     (SpliceJunctionFeature) ((FeatureTrack) track).getSelectedFeature();
+
+            // Start of Roche-Tessella modification
+            if (track.getAutoScale())    {
+            	Frequency f = new Frequency();
+        		List<Integer> scores = new ArrayList<Integer>();
+
+                for (IGVFeature feature : featureList) {
+                    SpliceJunctionFeature junctionFeature = (SpliceJunctionFeature) feature;
+                    f.addValue(junctionFeature.getScore());
+        			scores.add((int) junctionFeature.getScore());
+                }
+                
+                Collections.sort(scores);
+        		Collections.reverse(scores);
+        		for (int s: scores)	{
+        			if (f.getCumPct(s) < 0.99)	{
+        				MAX_DEPTH = s;
+        				break;
+        			}
+        		}
+
+            }
+            // End of Roche-Tessella modification
 
             for (IGVFeature feature : featureList) {
                 SpliceJunctionFeature junctionFeature = (SpliceJunctionFeature) feature;
