@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2010-2011 by Fred Hutchinson Cancer Research Center.  All Rights Reserved.
- * Portions of code, copyright (c) 2013 by F. Hoffman-La Roche Ltd and Tessella Ltd
+ * Portions of code, copyright (c) 2013 by F. Hoffmann-La Roche Ltd and Tessella Ltd
 
  * This software is licensed under the terms of the GNU Lesser General
  * Public License (LGPL), Version 2.1 which is available at http://www.opensource.org/licenses/lgpl-2.1.php.
